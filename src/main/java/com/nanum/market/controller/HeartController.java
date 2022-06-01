@@ -1,0 +1,45 @@
+package com.nanum.market.controller;
+
+import com.nanum.market.config.auth.PrincipalDetails;
+import com.nanum.market.model.Heart;
+import com.nanum.market.model.Message;
+import com.nanum.market.service.HeartService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+
+@RestController
+@RequiredArgsConstructor
+public class HeartController {
+
+    private final HeartService heartService;
+
+    @GetMapping("/boards/{boardId}/heart")
+    public HashMap<String, Object> getHeart(@PathVariable Long boardId, @AuthenticationPrincipal PrincipalDetails userDetails) {
+        return heartService.getHeart(boardId, userDetails.getUser().getId());
+    }
+
+    @PostMapping("/boards/{boardId}/heart")
+    public ResponseEntity createHeart(@PathVariable Long boardId, @AuthenticationPrincipal PrincipalDetails userDetails){
+        Heart heart = heartService.createHeart(boardId, userDetails.getUser().getId());
+        if(heart == null){
+            Message message = new Message("이미좋아요 상태입니다.");
+            return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/boards/{boardId}/heart")
+    public ResponseEntity deleteHeart(@PathVariable Long boardId, @AuthenticationPrincipal PrincipalDetails userDetails){
+        Heart heart = heartService.DeleteHeart(boardId, userDetails.getUser().getId());
+        if(heart == null){
+            Message message = new Message("취소할 좋아요가 없습니다.");
+            return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return ResponseEntity.ok().build();
+    }
+}
