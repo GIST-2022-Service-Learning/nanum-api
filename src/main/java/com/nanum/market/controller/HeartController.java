@@ -24,22 +24,9 @@ public class HeartController {
     }
 
     @PostMapping("/boards/{boardId}/heart")
-    public ResponseEntity createHeart(@PathVariable Long boardId, @AuthenticationPrincipal PrincipalDetails userDetails){
-        Heart heart = heartService.createHeart(boardId, userDetails.getUser().getId());
-        if(heart == null){
-            Message message = new Message("이미좋아요 상태입니다.");
-            return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Boolean> createHeart(@PathVariable Long boardId, @AuthenticationPrincipal PrincipalDetails userDetails){
+        Boolean status = heartService.createHeart(boardId, userDetails.getUser().getId());
+        return ResponseEntity.ok(status);
     }
 
-    @DeleteMapping("/boards/{boardId}/heart")
-    public ResponseEntity deleteHeart(@PathVariable Long boardId, @AuthenticationPrincipal PrincipalDetails userDetails){
-        Heart heart = heartService.DeleteHeart(boardId, userDetails.getUser().getId());
-        if(heart == null){
-            Message message = new Message("취소할 좋아요가 없습니다.");
-            return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return ResponseEntity.ok().build();
-    }
 }

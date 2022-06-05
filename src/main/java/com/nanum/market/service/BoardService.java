@@ -12,6 +12,7 @@ import com.nanum.market.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.security.sasl.AuthenticationException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class BoardService {
 
         for(int i=0; i<board.size(); i++){
             Heart heart = heartRepository.findByBoardIdAndUserId(board.get(i).getId(), userId);;
-            if (heart == null) {
+            if (heart == null && board.get(i).isStatus() == false ) {
                 BoardMainDto mainDto = new BoardMainDto(board.get(i));
                 mainDtoList.add(mainDto);
             }
@@ -58,6 +59,12 @@ public class BoardService {
         List<BoardCommentDto> boardCommentDtoList = new ArrayList<>();
         for(int i=0; i<board.size(); i++){
             Long boardId = board.get(i).getId();
+            String imgurl = board.get(i).getImgUrl();
+            Long ownerId = board.get(i).getUser().getId();
+            Boolean owned = false;
+            if(ownerId == userId){
+                owned = true;
+            }
             Heart heart = heartRepository.findByBoardIdAndUserId(boardId, userId);;
             if (heart != null) {
                 List<Comment> comment = commentRepository.findByBoardId(boardId);
@@ -66,7 +73,7 @@ public class BoardService {
                     CommentDto commentDto = new CommentDto(comment.get(i));
                     commentDtoList.add(commentDto);
                 }
-                boardCommentDtoList.add(new BoardCommentDto(boardId,commentDtoList));
+                boardCommentDtoList.add(new BoardCommentDto(boardId, imgurl, owned, commentDtoList));
             }
         }
         return boardCommentDtoList;
@@ -83,6 +90,17 @@ public class BoardService {
             mainDtoList.add(mainDto);
         }
         return mainDtoList;
+    }
+
+    // 거래 완료 표시
+    public boolean completeBoard(Long boardId,Long userId) {
+        Board board = boardRepository.findById(boardId).orElseThrow(
+                ()-> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+        if(board.getUser().getId() == userId ){
+            board.setStatus(true);
+            return true;
+        }
+        return false;
     }
 
     // 검색한 게시글 조회

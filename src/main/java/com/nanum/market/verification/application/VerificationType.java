@@ -1,8 +1,7 @@
 package com.nanum.market.verification.application;
 
 public enum VerificationType {
-    SignUp("[나눔 마켓] 회원 가입 인증 메일", "sign_up_verification.html"),
-    NewPassword("[지스트 청원] 비밀번호 찾기 인증 메일", "find_password_verification.html");
+    SignUp("[나눔] 회원 가입 인증 메일", "sign_up_verification.html");
 
     private final String subject;
     private final String template;

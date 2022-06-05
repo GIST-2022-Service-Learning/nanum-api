@@ -49,7 +49,7 @@ public class HeartService {
     }
 
     // 좋아요 하기
-    public Heart createHeart(Long boardId, Long userId){
+    public Boolean createHeart(Long boardId, Long userId){
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException("계정이 존재하지 않습니다.")
         );
@@ -57,14 +57,16 @@ public class HeartService {
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
         Heart heart = heartRepository.findByBoardIdAndUserId(boardId, userId); // user_id 추가해야함
-        if(heart == null){
+        if(heart == null) {
             Heart newHeart = new Heart();
             newHeart.addUser(user);
             newHeart.addBoard(board);
             heartRepository.save(newHeart);
-            return newHeart;
+            return true;
         }else{
-            return null;
+            heart.deleteUser(user);
+            heartRepository.save(heart);
+            return false;
         }
     }
 

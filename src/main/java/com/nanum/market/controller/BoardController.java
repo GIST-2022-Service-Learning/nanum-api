@@ -102,6 +102,13 @@ public class BoardController {
 //        }
     }
 
+    // 거래 완료 기능
+    @PutMapping("/boards/{boardId}/complete")
+    public boolean completeBoard(@PathVariable Long boardId, @AuthenticationPrincipal PrincipalDetails userDetails) throws IOException {
+        Long userId = userDetails.getUser().getId();
+        return boardService.completeBoard(boardId,userId);
+    }
+
     // 게시글 삭제
     @DeleteMapping("/boards/{boardId}")
     public ResponseEntity deleteBoard(@PathVariable Long boardId, @AuthenticationPrincipal PrincipalDetails userDetails){
