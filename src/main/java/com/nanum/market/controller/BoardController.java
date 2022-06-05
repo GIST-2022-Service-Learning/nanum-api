@@ -51,11 +51,10 @@ public class BoardController {
 
     // 게시글 작성
     @PostMapping("/boards")
-    public BoardPostDto createBoard(@RequestParam("title") String title, @RequestParam("content") String content,
-                                      @RequestParam(value = "status", required = false) boolean status, @RequestParam(value = "exchange", required = false) boolean exchange,
-                                      @RequestParam("file") MultipartFile files, @AuthenticationPrincipal PrincipalDetails userDetails) throws IOException {
+    public BoardPostDto createBoard(@RequestParam(value = "title") String title, @RequestParam(value = "content", required = false) String content,
+                                      @RequestParam(value = "status") boolean status, @RequestParam(value = "exchange", required = false) boolean exchange,
+                                      @RequestParam(value = "file") MultipartFile files, @AuthenticationPrincipal PrincipalDetails userDetails) throws IOException {
 
-        System.out.println("여끼까지");
         String imgUrl = s3Uploader.upload(files);
         BoardRequestDto requestDto = new BoardRequestDto(title, content,status, exchange, imgUrl);
 

@@ -42,7 +42,6 @@ public class UserController {
         String emailCheck = userService.emailCheck(reqeustDto.getEmail());
 
         if(usernameCheck =="false"){
-
             //validateHandling의 error와 데이터 형식을 맞춰서 return 해주기 위해서 json형태로..
             Map<String, String> usernameResult = new HashMap<>();
             usernameResult.put("username", "아이디 중복입니다.");
