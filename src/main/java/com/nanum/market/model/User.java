@@ -32,9 +32,6 @@ public class User extends Timestamped{
     @Column(nullable = false)
     private String email;
 
-    @Embedded
-    private Adderss address;
-
     @Column
     private String myself;
 
@@ -73,7 +70,7 @@ public class User extends Timestamped{
 
     //일반회원 reqequstDto
     @Builder
-    public User(String username , String password,String email,String myself,String city,String street) {
+    public User(String username , String password,String email,String myself) {
         this.username = username;
 
         this.password = password;
@@ -81,11 +78,6 @@ public class User extends Timestamped{
         this.email = email;
 
         this.myself = myself;
-
-        this.address = Adderss.builder()
-                .city(city)
-                .street(street)
-                .build();
 
         this.role = UserRole.ROLE_USER;
     }

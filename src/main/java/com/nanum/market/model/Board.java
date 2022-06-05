@@ -21,10 +21,8 @@ public class Board extends Timestamped{
     @Column(nullable = false)
     private String content;
     //private int price;
-    @Column(nullable = true)
+    @Column(nullable = false)
     private boolean status;
-    @Column(nullable = true)
-    private boolean exchange;
     private String imgUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,18 +41,14 @@ public class Board extends Timestamped{
     public Board(BoardRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
-        //this.price = requestDto.getPrice();
-        //this.status = requestDto.isStatus();
-        //this.exchange = requestDto.isExchange();
+        this.status = false;
         this.imgUrl = requestDto.getImgUrl();
     }
 
     public void update(BoardRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
-        //this.price = requestDto.getPrice();
-        //this.status = requestDto.isStatus();
-        //this.exchange = requestDto.isExchange();
+        this.status = requestDto.isStatus();
         this.imgUrl = requestDto.getImgUrl();
     }
 

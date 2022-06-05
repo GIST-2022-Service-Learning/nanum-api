@@ -32,11 +32,6 @@ public class SignupReqeustDto {
 //            message = "jpg.gif.png파일만 가능합니다.")
     private String profile_img;
 
-    @NotBlank(message = "주소를 비워둘 수 없습니다.")
-    private String city;
-    @NotBlank(message = "주소를 비워둘 수 없습니다.")
-    private String street;
-
 
     @Builder
     public SignupReqeustDto(String username, String password, String email, String myself, String profile_img, String city, String street) {
@@ -45,8 +40,7 @@ public class SignupReqeustDto {
         this.email = email;
         this.myself = myself;
         this.profile_img = profile_img;
-        this.city = city;
-        this.street = street;
+
     }
 
     public User toEntity(){
@@ -55,8 +49,6 @@ public class SignupReqeustDto {
                 .password(password)
                 .email(email)
                 .myself(myself)
-                .city(city)
-                .street(street)
                 .build();
     }
 }

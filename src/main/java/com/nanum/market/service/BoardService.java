@@ -137,7 +137,7 @@ public class BoardService {
 
     // 게시글 수정
     @Transactional
-    public BoardPostDto updateBoard(Long boardId, BoardRequestDto requestDto, Long userId) {
+    public BoardPostDto updateBoard(Long boardId, BoardRequestDto requestDto,Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException("계정이 존재하지 않습니다.")
         );
