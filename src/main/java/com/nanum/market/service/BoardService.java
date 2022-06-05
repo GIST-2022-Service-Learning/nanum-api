@@ -1,12 +1,13 @@
 package com.nanum.market.service;
 
-import com.nanum.market.dto.BoardDetailDto;
-import com.nanum.market.dto.BoardMainDto;
-import com.nanum.market.dto.BoardPostDto;
-import com.nanum.market.dto.BoardRequestDto;
+import com.nanum.market.dto.*;
 import com.nanum.market.model.Board;
+import com.nanum.market.model.Comment;
+import com.nanum.market.model.Heart;
 import com.nanum.market.model.User;
 import com.nanum.market.repository.BoardRepository;
+import com.nanum.market.repository.CommentRepository;
+import com.nanum.market.repository.HeartRepository;
 import com.nanum.market.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,61 @@ import java.util.List;
 public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final HeartRepository heartRepository;
+    private final CommentRepository commentRepository;
     private final static int size = 10;
 
     // 게시글 조회
     public List<BoardMainDto> getBoard() {
         List<Board> board = boardRepository.findAllByOrderByModifiedAtDesc();
+        List<BoardMainDto> mainDtoList = new ArrayList<>();
+        // main에 필요한 값들만 Dto로 만들어서 보내준다.
+        for(int i=0; i<board.size(); i++){
+            BoardMainDto mainDto = new BoardMainDto(board.get(i));
+            mainDtoList.add(mainDto);
+        }
+        return mainDtoList;
+    }
+
+    // 좋아요한 게시물 배제하여 get
+    public List<BoardMainDto> getBoardExceptHeart(Long userId) {
+        List<Board> board = boardRepository.findAllByOrderByModifiedAtDesc();
+        List<BoardMainDto> mainDtoList = new ArrayList<>();
+
+        for(int i=0; i<board.size(); i++){
+            Heart heart = heartRepository.findByBoardIdAndUserId(board.get(i).getId(), userId);;
+            if (heart == null) {
+                BoardMainDto mainDto = new BoardMainDto(board.get(i));
+                mainDtoList.add(mainDto);
+            }
+        }
+        return mainDtoList;
+    }
+
+    // 좋아요한 게시물만  get
+    public List<BoardCommentDto> getMyHeartBoard(Long userId) {
+        List<Board> board = boardRepository.findAllByOrderByModifiedAtDesc();
+        List<BoardCommentDto> boardCommentDtoList = new ArrayList<>();
+        for(int i=0; i<board.size(); i++){
+            Long boardId = board.get(i).getId();
+            Heart heart = heartRepository.findByBoardIdAndUserId(boardId, userId);;
+            if (heart != null) {
+                List<Comment> comment = commentRepository.findByBoardId(boardId);
+                List<CommentDto> commentDtoList = new ArrayList<>();
+                for(int j=0; j<comment.size(); j++) {
+                    CommentDto commentDto = new CommentDto(comment.get(i));
+                    commentDtoList.add(commentDto);
+                }
+                boardCommentDtoList.add(new BoardCommentDto(boardId,commentDtoList));
+            }
+        }
+        return boardCommentDtoList;
+    }
+
+    // 올린 게시글 조회
+
+    public List<BoardMainDto> getMyBoard(User user) {
+        List<Board> board = boardRepository.findByUser(user);
         List<BoardMainDto> mainDtoList = new ArrayList<>();
         // main에 필요한 값들만 Dto로 만들어서 보내준다.
         for(int i=0; i<board.size(); i++){

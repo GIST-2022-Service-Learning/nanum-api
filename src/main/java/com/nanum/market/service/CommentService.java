@@ -30,7 +30,6 @@ public class CommentService {
             commentDtoList.add(commentDto);
         }
         return commentDtoList;
-
     }
 
 

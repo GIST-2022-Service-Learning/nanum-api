@@ -1,10 +1,7 @@
 package com.nanum.market.controller;
 
 import com.nanum.market.config.auth.PrincipalDetails;
-import com.nanum.market.dto.BoardDetailDto;
-import com.nanum.market.dto.BoardMainDto;
-import com.nanum.market.dto.BoardPostDto;
-import com.nanum.market.dto.BoardRequestDto;
+import com.nanum.market.dto.*;
 import com.nanum.market.model.Board;
 
 import com.nanum.market.model.Message;
@@ -30,13 +27,19 @@ public class BoardController {
 
     //전체게시글 조회, 검색 (메인페이지)
     @GetMapping("/main")
-    public List<BoardMainDto> getBoard(@RequestParam(value = "searchText", required = false) String searchText){
+    public List<BoardMainDto> getBoard(@RequestParam(value = "searchText", required = false) String searchText, @AuthenticationPrincipal PrincipalDetails userDetails){
         if (searchText == null){
             System.out.println("-----------------------------------");
-            return boardService.getBoard();
+            return boardService.getBoardExceptHeart(userDetails.getUser().getId());
         }else{
             return boardService.getSearchBoard(searchText);
         }
+    }
+
+    @GetMapping("/board/me/heart")
+    public List<BoardCommentDto> getHeartBoard(@AuthenticationPrincipal PrincipalDetails userDetails){
+        Long userId = userDetails.getUser().getId();
+        return boardService.getMyHeartBoard(userId);
     }
 
     // 전체게시글 조회, 검색 (메인페이지), 무한스크롤 page는 1부터 받아야한다.
@@ -48,6 +51,11 @@ public class BoardController {
 //            return boardService.getSearchBoard(searchText, page);
 //        }
 //    }
+
+    @GetMapping("/board/me")
+    public List<BoardMainDto> getMyBoard(@AuthenticationPrincipal PrincipalDetails userDetails) {
+        return boardService.getMyBoard(userDetails.getUser());
+    }
 
     // 게시글 작성
     @PostMapping("/boards")
