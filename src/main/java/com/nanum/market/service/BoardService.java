@@ -39,13 +39,13 @@ public class BoardService {
     }
 
     // 좋아요한 게시물 배제하여 get
-    public List<BoardMainDto> getBoardExceptHeart(Long userId) {
+    public List<BoardMainDto> getBoards(Long userId) {
         List<Board> board = boardRepository.findAllByOrderByModifiedAtDesc();
         List<BoardMainDto> mainDtoList = new ArrayList<>();
 
         for(int i=0; i<board.size(); i++){
             Heart heart = heartRepository.findByBoardIdAndUserId(board.get(i).getId(), userId);;
-            if (heart == null && board.get(i).isStatus() == false ) {
+            if (heart == null && board.get(i).isStatus() == false && board.get(i).getUser().getId() != userId ) {
                 BoardMainDto mainDto = new BoardMainDto(board.get(i));
                 mainDtoList.add(mainDto);
             }

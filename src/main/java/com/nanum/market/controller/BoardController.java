@@ -29,8 +29,7 @@ public class BoardController {
     @GetMapping("/main")
     public List<BoardMainDto> getBoard(@RequestParam(value = "searchText", required = false) String searchText, @AuthenticationPrincipal PrincipalDetails userDetails){
         if (searchText == null){
-            System.out.println("-----------------------------------");
-            return boardService.getBoardExceptHeart(userDetails.getUser().getId());
+            return boardService.getBoards(userDetails.getUser().getId());
         }else{
             return boardService.getSearchBoard(searchText);
         }
