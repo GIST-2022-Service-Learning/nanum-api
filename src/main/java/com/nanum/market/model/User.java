@@ -30,13 +30,7 @@ public class User extends Timestamped{
     private String password;
 
     @Column(nullable = false)
-    private String email;
-
-    @Column
-    private String myself;
-
-    @Column(columnDefinition = "TEXT")
-    private String profile_img;
+    private String nickname;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -62,38 +56,18 @@ public class User extends Timestamped{
     @OneToMany(mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();
 
-//    @Column(nullable = false)
-//    private String kakaoId;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Notice> notices;
 
     //일반회원 reqequstDto
     @Builder
-    public User(String username , String password,String email,String myself) {
+    public User(String username , String password,String nickname) {
         this.username = username;
 
         this.password = password;
 
-        this.email = email;
-
-        this.myself = myself;
+        this.nickname = nickname;
 
         this.role = UserRole.ROLE_USER;
     }
-
-    // Kakao 회원가입 Dto
-//    public User(String username,String password,String email,String kakaoId) {
-//        this.username = username;
-//
-//        this.password = password;
-//
-//        this.email = email;
-//
-//        this.myself = "test";
-//
-//        this.address = new Adderss("test","test");
-//        this.role = UserRole.ROLE_USER;
-//        this.kakaoId = kakaoId;
-//    }
 }

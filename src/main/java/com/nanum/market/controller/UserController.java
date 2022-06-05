@@ -21,33 +21,17 @@ public class UserController {
         this.userService = userService;
     }
 
-//   연결 테스트
-//    @GetMapping("/hello")
-//    public String hello(){
-//        return "hello";
-//    }
-
     @PostMapping("/signups")
     public ResponseEntity signup(@RequestBody @Valid SignupReqeustDto reqeustDto, Errors errors)throws Exception{
-//        System.out.println("username :"+reqeustDto.getUsername());
-//        System.out.println("password :"+reqeustDto.getPassword());
-
         /* 에러 메시지 반환 */
         if(errors.hasErrors()){
             Map<String, String> error = userService.validateHandling(errors);
             return new ResponseEntity(error, HttpStatus.INSUFFICIENT_STORAGE);
         }
 
-        String usernameCheck = userService.usernameCheck(reqeustDto.getUsername());
-        String emailCheck = userService.emailCheck(reqeustDto.getEmail());
+        String emailCheck = userService.emailCheck(reqeustDto.getUsername());
 
-        if(usernameCheck =="false"){
-            //validateHandling의 error와 데이터 형식을 맞춰서 return 해주기 위해서 json형태로..
-            Map<String, String> usernameResult = new HashMap<>();
-            usernameResult.put("username", "아이디 중복입니다.");
-            return new ResponseEntity(usernameResult,HttpStatus.INSUFFICIENT_STORAGE);
-
-        }else if(emailCheck == "false"){
+        if(emailCheck == "false"){
             Map<String, String> emailResult = new HashMap<>();
             emailResult.put("email", "이메일 중복입니다");
             return new ResponseEntity(emailResult,HttpStatus.INSUFFICIENT_STORAGE);

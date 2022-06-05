@@ -12,9 +12,9 @@ import javax.validation.constraints.*;
 @Setter
 public class SignupReqeustDto {
 
-    @NotBlank(message = "아이디를 비워둘 수 없습니다.")
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{4,12}$",
-            message = "아이디는 숫자와 영어를 포함한 4-12글자여야합니다.")
+
+    @NotBlank(message = "이메일을 비워둘 수 없습니다.")
+    @Email(message = "메일 양식을 지켜주세요.")
     private String username;
 
     @NotBlank(message = "비밀번호를 비워둘 수 없습니다.")
@@ -22,24 +22,19 @@ public class SignupReqeustDto {
             message = "비밀번호는 영문 대소문자와 숫자,특수문자를 포함한 8-20자여야합니다.")
     private String password;
 
-    @NotBlank(message = "이메일을 비워둘 수 없습니다.")
-    @Email(message = "메일 양식을 지켜주세요.")
-    private String email;
+    @NotBlank(message = "닉네임을 비워둘 수 없습니다.")
+    private String nickname;
 
-    private String myself;
+    @NotBlank(message = "인증코드를 비워둘 수 없습니다.")
+    private String verificationCode;
 
-//    @Pattern(regexp = "/([^\\s]+(?=\\.(jpg|gif|png))\\.\\2)/",
-//            message = "jpg.gif.png파일만 가능합니다.")
-    private String profile_img;
 
 
     @Builder
-    public SignupReqeustDto(String username, String password, String email, String myself, String profile_img, String city, String street) {
+    public SignupReqeustDto(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
-        this.email = email;
-        this.myself = myself;
-        this.profile_img = profile_img;
+        this.nickname = nickname;
 
     }
 
@@ -47,8 +42,7 @@ public class SignupReqeustDto {
         return User.builder()
                 .username(username)
                 .password(password)
-                .email(email)
-                .myself(myself)
+                .nickname(nickname)
                 .build();
     }
 }

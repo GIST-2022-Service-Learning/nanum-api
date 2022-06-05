@@ -12,7 +12,7 @@ public class BoardDetailDto {
     //private boolean exchange;
     private String imgUrl;
     private Long userId;
-    private String userEmail;
+    private String userName;
 
     public BoardDetailDto(Board board) {
         this.title = board.getTitle();
@@ -22,6 +22,6 @@ public class BoardDetailDto {
         //this.exchange = board.isExchange();
         this.imgUrl = board.getImgUrl();
         this.userId = board.getUser().getId();
-        this.userEmail = board.getUser().getEmail();
+        this.userName = board.getUser().getUsername();
     }
 }
