@@ -25,7 +25,6 @@ public class LoginErrorHandlerController implements ErrorController {
     @RequestMapping("/error")
     public Map handleError(HttpServletRequest request){
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-
         Map result = new HashMap();
         result.put("message","loginfail");
         return result;

@@ -8,9 +8,7 @@ public class
 BoardRequestDto {
     private String title;
     private String content;
-    //private int price;
     private boolean status;
-    //private boolean exchange;
     private String imgUrl;
 
     public BoardRequestDto(String title, String content,boolean status, String imgUrl) {

@@ -17,14 +17,12 @@ public class PrincipalDetails implements UserDetails {
 
     private User user;
 
-
     public PrincipalDetails(User user) {
         this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        //user객체에 유저 역활 뺴오기
         UserRole userRole = user.getRole();
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.toString());
 

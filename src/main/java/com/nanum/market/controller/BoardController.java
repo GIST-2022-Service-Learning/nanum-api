@@ -41,16 +41,6 @@ public class BoardController {
         return boardService.getMyHeartBoard(userId);
     }
 
-    // 전체게시글 조회, 검색 (메인페이지), 무한스크롤 page는 1부터 받아야한다.
-//    @GetMapping("/main")
-//    public Page<BoardMainDto> getBoard(@RequestParam("page") int page, @RequestParam(value = "searchText", required = false) String searchText){
-//        if (searchText == null){
-//            return boardService.getBoard(page);
-//        }else{
-//            return boardService.getSearchBoard(searchText, page);
-//        }
-//    }
-
     @GetMapping("/board/me")
     public List<BoardMainDto> getMyBoard(@AuthenticationPrincipal PrincipalDetails userDetails) {
         return boardService.getMyBoard(userDetails.getUser());
@@ -68,18 +58,6 @@ public class BoardController {
 
     }
 
-    //
-
-//    @PostMapping("/boards")
-//    public ResponseEntity createBoard(@RequestBody @RequestParam("requestDto") BoardRequestDto requestDto,
-//                                      @RequestParam("file") MultipartFile files, @AuthenticationPrincipal PrincipalDetails userDetails) throws IOException {
-//        String imgUrl = s3Uploader.upload(files, "static");
-//        //BoardRequestDto requestDto = new BoardRequestDto(title, content, price, status, exchange, imgUrl);
-//
-//        boardService.createBoard(requestDto, userDetails.getUser().getId());
-//        return ResponseEntity.ok().build();
-//    }
-
     // 게시글 수정
     @PutMapping("/boards/{boardId}")
     public BoardPostDto updateBoard(@PathVariable Long boardId, @RequestParam("title") String title, @RequestParam("content") String content,
@@ -95,10 +73,6 @@ public class BoardController {
 
         return boardService.updateBoard(boardId, requestDto
                 ,userDetails.getUser().getId());
-//        if (board==null){
-//            Message message = new Message("자신이 작성한 게시글만 수정할 수 있습니다.");
-//            return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
     }
 
     // 거래 완료 기능

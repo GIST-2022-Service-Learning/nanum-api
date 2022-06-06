@@ -43,21 +43,11 @@ public class User extends Timestamped{
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Heart> hearts = new ArrayList<>();
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "user")
-    private List<Follow> requestUsers = new ArrayList<>();
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "followUser")
-    private List<Follow> responseUsers = new ArrayList<>();
-
+    
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Notice> notices;
 
     //일반회원 reqequstDto
     @Builder
