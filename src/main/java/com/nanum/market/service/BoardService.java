@@ -70,7 +70,7 @@ public class BoardService {
                 List<Comment> comment = commentRepository.findByBoardId(boardId);
                 List<CommentDto> commentDtoList = new ArrayList<>();
                 for(int j=0; j<comment.size(); j++) {
-                    CommentDto commentDto = new CommentDto(comment.get(i));
+                    CommentDto commentDto = new CommentDto(comment.get(j));
                     commentDtoList.add(commentDto);
                 }
                 boardCommentDtoList.add(new BoardCommentDto(boardId, imgurl, owned, commentDtoList));
