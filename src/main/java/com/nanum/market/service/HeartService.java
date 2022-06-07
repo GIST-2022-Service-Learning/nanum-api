@@ -64,8 +64,7 @@ public class HeartService {
             heartRepository.save(newHeart);
             return true;
         }else{
-            heart.deleteUser(user);
-            heartRepository.save(heart);
+            heartRepository.deleteByBoardIdAndUserId(boardId,userId);
             return false;
         }
     }

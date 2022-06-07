@@ -98,6 +98,7 @@ public class BoardService {
                 ()-> new IllegalArgumentException("게시글이 존재하지 않습니다."));
         if(board.getUser().getId() == userId ){
             board.setStatus(true);
+            boardRepository.save(board);
             return true;
         }
         return false;

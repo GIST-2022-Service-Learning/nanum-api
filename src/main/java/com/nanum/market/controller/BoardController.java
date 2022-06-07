@@ -35,13 +35,13 @@ public class BoardController {
         }
     }
 
-    @GetMapping("/board/me/heart")
+    @GetMapping("/boards/me/heart")
     public List<BoardCommentDto> getHeartBoard(@AuthenticationPrincipal PrincipalDetails userDetails){
         Long userId = userDetails.getUser().getId();
         return boardService.getMyHeartBoard(userId);
     }
 
-    @GetMapping("/board/me")
+    @GetMapping("/boards/me")
     public List<BoardMainDto> getMyBoard(@AuthenticationPrincipal PrincipalDetails userDetails) {
         return boardService.getMyBoard(userDetails.getUser());
     }
